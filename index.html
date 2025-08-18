@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>zillow Application Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: blue;
+            min-height: 100vh;
+        }
+        h2 { text-align: center; color: white; }
+        label { display: block; margin-top: 10px; font-weight: bold; color: black; }
+        input, select, textarea { width: 100%; padding: 6px; margin-top: 4px; box-sizing: border-box; }
+        .section { border: 1px solid #ccc; padding: 15px; margin-top: 20px; background: rgba(255,255,255,0.9); border-radius: 8px; }
+        button { margin-top: 15px; padding: 10px; width: 100%; font-size: 16px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        button:disabled { background-color: gray; cursor: not-allowed; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-group button { flex: 1; }
+        .hidden { display: none; }
+        #confirmation { background: white; padding: 15px; border-radius: 8px; }
+        #confirmation .row { margin: 8px 0; }
+        #confirmation strong { color: black; }
+        .payment-options { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+        .payment-btn {
+            flex: 1 1 120px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            background: white;
+            text-align: center;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .payment-btn img { max-width: 80px; height: 40px; display: block; margin: 0 auto 5px; }
+        .payment-btn.active { border-color: #28a745; background: #f1fff5; }
+
+        /* Custom Colors */
+        .cashapp { color: green; }
+        .chime { color: lightgreen; }
+        .venmo { color: lightblue; }
+        .zelle { color: purple; }
+    </style>
+</head>
+<body>
+    <h2>Zillow Rental/Lease Application</h2>
+
+    <!-- Page 1: Application Form -->
+    <form id="rentalForm">
+
+        <label>Date of Application:</label>
+        <input type="date" name="application_date" required>
+
+        <label>Property Address:</label>
+        <input type="text" name="property_address" required>
+
+        <label>Unit No.:</label>
+        <input type="text" name="unit_number">
+
+        <label>City, State, Zip Code:</label>
+        <input type="text" name="city_state_zip" required>
+
+        <!-- Applicant 1 -->
+        <div class="section">
+            <h3>Applicant 1</h3>
+            <label>First Name:</label>
+            <input type="text" name="first_name1" required>
+            <label>Middle Initial:</label>
+            <input type="text" name="middle_initial1">
+            <label>Last Name:</label>
+            <input type="text" name="last_name1" required>
+            <label>Date of Birth:</label>
+            <input type="date" name="dob1" required>
+            <label>Social Security Number:</label>
+            <input type="text" name="ssn1" required>
+            <label>Phone Number:</label>
+            <input type="tel" name="phone1" required>
+            <label>Email Address:</label>
+            <input type="email" name="email1" required>
+            <label>Driver's License No.:</label>
+            <input type="text" name="license_no1">
+            <label>Driver's License State of Issue:</label>
+            <input type="text" name="license_state1">
+        </div>
+
+        <!-- Applicant 2 -->
+        <div class="section">
+            <h3>Applicant 2</h3>
+            <label>First Name:</label>
+            <input type="text" name="first_name2">
+            <label>Middle Initial:</label>
+            <input type="text" name="middle_initial2">
+            <label>Last Name:</label>
+            <input type="text" name="last_name2">
+            <label>Date of Birth:</label>
+            <input type="date" name="dob2">
+            <label>Social Security Number:</label>
+            <input type="text" name="ssn2">
+            <label>Phone Number:</label>
+            <input type="tel" name="phone2">
+            <label>Email Address:</label>
+            <input type="email" name="email2">
+            <label>Driver's License No.:</label>
+            <input type="text" name="license_no2">
+            <label>Driver's License State of Issue:</label>
+            <input type="text" name="license_state2">
+        </div>
+
+        <!-- Residence History -->
+        <div class="section">
+            <h3>Residence History</h3>
+            <label>Years of History:</label>
+            <input type="number" name="res_history_years" required>
+            <h4>Current Address</h4>
+            <label>Address:</label>
+            <input type="text" name="current_address" required>
+            <label>Unit No.:</label>
+            <input type="text" name="current_unit">
+            <label>City, State, Zip Code:</label>
+            <input type="text" name="current_city_state_zip" required>
+            <label>Dates of Residence:</label>
+            <input type="text" name="residence_dates" required>
+            <label>Monthly Rent:</label>
+            <input type="number" name="monthly_rent" required>
+            <label>Reason for Moving:</label>
+            <input type="text" name="reason_moving" required>
+            <label>Check One:</label>
+            <select name="own_rent" required>
+                <option value="">-- Select --</option>
+                <option value="own">Own</option>
+                <option value="rent">Rent</option>
+                <option value="other">Other</option>
+            </select>
+            <label>If Rent, Name of Landlord:</label>
+            <input type="text" name="landlord_name">
+            <label>Landlord Phone No.:</label>
+            <input type="tel" name="landlord_phone">
+        </div>
+
+        <!-- Employment -->
+        <div class="section">
+            <h3>Employment / Financial</h3>
+            <label>Years of History:</label>
+            <input type="number" name="employment_years" required>
+            <label>Current Employer:</label>
+            <input type="text" name="employer" required>
+            <label>Position/Title:</label>
+            <input type="text" name="position" required>
+            <label>Employer Address:</label>
+            <input type="text" name="employer_address" required>
+            <label>City, State, Zip Code:</label>
+            <input type="text" name="employer_city_state_zip" required>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="section">
+            <h3>Select Payment Method</h3>
+            <div class="payment-options">
+                <div class="payment-btn" data-method="Apple Pay">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Pay">
+                    <b>Apple Pay</b>
+                </div>
+                <div class="payment-btn cashapp" data-method="CashApp">
+                    <b>CashApp</b>
+                </div>
+                <div class="payment-btn chime" data-method="Chime">
+                    <b>Chime</b>
+                </div>
+                <div class="payment-btn" data-method="PayPal">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+                    <b>PayPal</b>
+                </div>
+                <div class="payment-btn venmo" data-method="Venmo">
+                    <b>Venmo</b>
+                </div>
+                <div class="payment-btn zelle" data-method="Zelle">
+                    <b>Zelle</b>
+                </div>
+                <div class="payment-btn" data-method="Gift Card">
+                    <b>Gift Card</b>
+                </div>
+            </div>
+        </div>
+
+        <button id="submitBtn" type="submit">Submit Application</button>
+    </form>
+
+    <!-- Page 2: Confirmation -->
+    <div id="confirmationPage" class="hidden">
+        <h2 style="color:black;">Confirm Your Details</h2>
+        <div id="confirmation"></div>
+        <div class="btn-group">
+            <button onclick="goBack()">⬅️ Edit</button>
+            <button onclick="finalSubmit()">✅ Confirm & Submit</button>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("rentalForm");
+        const confirmationPage = document.getElementById("confirmationPage");
+        const confirmationDiv = document.getElementById("confirmation");
+        let selectedPayment = null;
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            if (!form.checkValidity()) {
+                alert("❌ Please fill in all required fields before submitting.");
+                return;
+            }
+            if (!selectedPayment) {
+                alert("⚠️ Please select a payment method before submitting.");
+                return;
+            }
+
+            let formData = {};
+            new FormData(form).forEach((value, key) => formData[key] = value);
+
+            form.classList.add("hidden");
+            confirmationPage.classList.remove("hidden");
+
+            confirmationDiv.innerHTML = "";
+            for (let key in formData) {
+                let row = document.createElement("div");
+                row.className = "row";
+                row.innerHTML = `<strong>${key.replace(/_/g," ")}:</strong> ${formData[key]}`;
+                confirmationDiv.appendChild(row);
+            }
+
+            let row = document.createElement("div");
+            row.className = "row";
+            row.innerHTML = `<strong>Payment Method:</strong> ${selectedPayment}`;
+            confirmationDiv.appendChild(row);
+        });
+
+        // Payment selection
+        document.querySelectorAll(".payment-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                selectedPayment = btn.getAttribute("data-method");
+            });
+        });
+
+        function goBack() {
+            confirmationPage.classList.add("hidden");
+            form.classList.remove("hidden");
+        }
+
+        function finalSubmit() {
+            alert("✅ Application Submitted Successfully with payment method: " + selectedPayment);
+            document.getElementById("submitBtn").disabled = true;
+
+            // Hide confirmation page after submit
+            confirmationPage.classList.add("hidden");
+
+            // Show clean success message
+            const successMsg = document.createElement("div");
+            successMsg.innerHTML = "<h2 style='color:green; text-align:center;'>🎉 Your application has been submitted successfully!</h2>";
+            document.body.appendChild(successMsg);
+        }
+    </script>
+</body>
+</html>
