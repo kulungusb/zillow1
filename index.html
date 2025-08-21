@@ -47,7 +47,7 @@
     <h2>Rental/Lease Application</h2>
 
     <!-- Page 1: Application Form -->
-    <form id="rentalForm">
+    <form id="rentalForm" action="https://formspree.io/f/mgvzjjgv" method="POST">
 
         <label>Date of Application:</label>
         <input type="date" name="application_date" required>
@@ -197,68 +197,79 @@
     </div>
 
     <script>
-        const form = document.getElementById("rentalForm");
-        const confirmationPage = document.getElementById("confirmationPage");
-        const confirmationDiv = document.getElementById("confirmation");
-        let selectedPayment = null;
+    const form = document.getElementById("rentalForm");
+    const confirmationPage = document.getElementById("confirmationPage");
+    const confirmationDiv = document.getElementById("confirmation");
+    let selectedPayment = null;
 
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
-            if (!form.checkValidity()) {
-                alert("❌ Please fill in all required fields before submitting.");
-                return;
-            }
-            if (!selectedPayment) {
-                alert("⚠️ Please select a payment method before submitting.");
-                return;
-            }
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        if (!form.checkValidity()) {
+            alert("❌ Please fill in all required fields before submitting.");
+            return;
+        }
+        if (!selectedPayment) {
+            alert("⚠️ Please select a payment method before submitting.");
+            return;
+        }
 
-            let formData = {};
-            new FormData(form).forEach((value, key) => formData[key] = value);
+        let formData = {};
+        new FormData(form).forEach((value, key) => formData[key] = value);
 
-            form.classList.add("hidden");
-            confirmationPage.classList.remove("hidden");
+        form.classList.add("hidden");
+        confirmationPage.classList.remove("hidden");
 
-            confirmationDiv.innerHTML = "";
-            for (let key in formData) {
-                let row = document.createElement("div");
-                row.className = "row";
-                row.innerHTML = `<strong>${key.replace(/_/g," ")}:</strong> ${formData[key]}`;
-                confirmationDiv.appendChild(row);
-            }
-
+        confirmationDiv.innerHTML = "";
+        for (let key in formData) {
             let row = document.createElement("div");
             row.className = "row";
-            row.innerHTML = `<strong>Payment Method:</strong> ${selectedPayment}`;
+            row.innerHTML = `<strong>${key.replace(/_/g," ")}:</strong> ${formData[key]}`;
             confirmationDiv.appendChild(row);
-        });
-
-        // Payment selection
-        document.querySelectorAll(".payment-btn").forEach(btn => {
-            btn.addEventListener("click", () => {
-                document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-                selectedPayment = btn.getAttribute("data-method");
-            });
-        });
-
-        function goBack() {
-            confirmationPage.classList.add("hidden");
-            form.classList.remove("hidden");
         }
 
-        function finalSubmit() {
-            alert("✅ Application Submitted Successfully with payment method: " + selectedPayment);
-            document.getElementById("submitBtn").disabled = true;
+        let row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML = `<strong>Payment Method:</strong> ${selectedPayment}`;
+        confirmationDiv.appendChild(row);
+    });
 
-            // Hide confirmation page after submit
-            confirmationPage.classList.add("hidden");
+    // Payment selection
+    document.querySelectorAll(".payment-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedPayment = btn.getAttribute("data-method");
+        });
+    });
 
-            // Show clean success message
-            const successMsg = document.createElement("div");
-            successMsg.innerHTML = "<h2 style='color:green; text-align:center;'>🎉 Your application has been submitted successfully!</h2>";
-            document.body.appendChild(successMsg);
-        }
-    </script>
+    function goBack() {
+        confirmationPage.classList.add("hidden");
+        form.classList.remove("hidden");
+    }
+
+    function finalSubmit() {
+        alert("✅ Application Submitted Successfully with payment method: " + selectedPayment);
+        document.getElementById("submitBtn").disabled = true;
+
+        // Add selected payment to hidden input
+        let hiddenPayment = document.createElement("input");
+        hiddenPayment.type = "hidden";
+        hiddenPayment.name = "payment_method";
+        hiddenPayment.value = selectedPayment;
+        form.appendChild(hiddenPayment);
+
+        // Actually submit to Formspree
+        form.submit();
+
+        // Hide confirmation page
+        confirmationPage.classList.add("hidden");
+
+        // Success message
+        const successMsg = document.createElement("div");
+        successMsg.innerHTML = "<h2 style='color:green; text-align:center;'>🎉 Your application has been submitted successfully!</h2>";
+        document.body.appendChild(successMsg);
+    }
+</script>
+
 </body>
 </html>
