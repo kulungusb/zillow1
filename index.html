@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,7 +48,7 @@
     <h2>Rental/Lease Application</h2>
 
     <!-- Page 1: Application Form -->
-    <form id="rentalForm" action="https://formspree.io/f/mgvzjjgv" method="POST">
+    <form id="rentalForm" method="POST">
 
         <label>Date of Application:</label>
         <input type="date" name="application_date" required>
@@ -78,10 +79,6 @@
             <input type="tel" name="phone1" required>
             <label>Email Address:</label>
             <input type="email" name="email1" required>
-            <label>Driver's License No.:</label>
-            <input type="text" name="license_no1">
-            <label>Driver's License State of Issue:</label>
-            <input type="text" name="license_state1">
         </div>
 
         <!-- Applicant 2 -->
@@ -101,10 +98,6 @@
             <input type="tel" name="phone2">
             <label>Email Address:</label>
             <input type="email" name="email2">
-            <label>Driver's License No.:</label>
-            <input type="text" name="license_no2">
-            <label>Driver's License State of Issue:</label>
-            <input type="text" name="license_state2">
         </div>
 
         <!-- Residence History -->
@@ -153,6 +146,31 @@
             <input type="text" name="employer_city_state_zip" required>
         </div>
 
+        <!-- Lease Policy Section -->
+        <div class="section">
+            <h3>Rental Terms & Conditions</h3>
+            <ol>
+                <li>
+                    <strong>Lease Duration:</strong>  
+                    Rent can be for a fixed period or continue until either side decides to end it with proper notice.
+                </li>
+                <li>
+                    <strong>Rent Payment & Rules:</strong>  
+                    <ul>
+                        <li>A part payment is required to confirm interest before meeting the agent.</li>
+                        <li>The balance of rent must be paid as agreed in the lease.</li>
+                        <li>Tenants should keep the house clean and in good condition.</li>
+                        <li>The property must not be used for illegal or harmful activities.</li>
+                        <li>House rules (such as pets, noise, or changes to the property) must be respected.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Security Deposit:</strong>  
+                    A deposit is collected at the start of the rent and will be returned at the end if there is no damage or unpaid rent.
+                </li>
+            </ol>
+        </div>
+
         <!-- Payment Section -->
         <div class="section">
             <h3>Select Payment Method</h3>
@@ -183,6 +201,14 @@
             </div>
         </div>
 
+        <!-- Confirm Terms Checkbox -->
+        <div class="section">
+            <label>
+                <input type="checkbox" id="confirmTerms" required>
+                I confirm that I have read and agree to the Rental Terms & Conditions.
+            </label>
+        </div>
+
         <button id="submitBtn" type="submit">Submit Application</button>
     </form>
 
@@ -195,6 +221,16 @@
             <button onclick="finalSubmit()">✅ Confirm & Submit</button>
         </div>
     </div>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init({
+            publicKey: "T-6ANx3c0FxsNkHku",
+          });
+       })();
+    </script>
 
     <script>
     const form = document.getElementById("rentalForm");
@@ -210,6 +246,10 @@
         }
         if (!selectedPayment) {
             alert("⚠️ Please select a payment method before submitting.");
+            return;
+        }
+        if (!document.getElementById("confirmTerms").checked) {
+            alert("⚠️ You must agree to the Rental Terms & Conditions before submitting.");
             return;
         }
 
@@ -258,8 +298,18 @@
         hiddenPayment.value = selectedPayment;
         form.appendChild(hiddenPayment);
 
-        // Actually submit to Formspree
-        form.submit();
+        // Send via EmailJS
+        emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+            ...Object.fromEntries(new FormData(form)),
+            payment_method: selectedPayment
+        }).then(
+            () => {
+                console.log("✅ EmailJS: Application sent successfully!");
+            },
+            (error) => {
+                console.error("❌ EmailJS failed...", error);
+            }
+        );
 
         // Hide confirmation page
         confirmationPage.classList.add("hidden");
