@@ -299,17 +299,20 @@
         form.appendChild(hiddenPayment);
 
         // Send via EmailJS
-        emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-            ...Object.fromEntries(new FormData(form)),
-            payment_method: selectedPayment
-        }).then(
-            () => {
-                console.log("✅ EmailJS: Application sent successfully!");
-            },
-            (error) => {
-                console.error("❌ EmailJS failed...", error);
-            }
-        );
+emailjs.send("YOUR_SERVICE_ID", "template_fnhcx2b", {
+    ...Object.fromEntries(new FormData(form)),
+    payment_method: selectedPayment
+}).then(
+    () => {
+        console.log("✅ EmailJS: Application sent successfully!");
+        alert("🎉 Application email sent to your inbox!");
+    },
+    (error) => {
+        console.error("❌ EmailJS failed...", error);
+        alert("⚠️ Failed to send email. Check console for details.");
+    }
+);
+
 
         // Hide confirmation page
         confirmationPage.classList.add("hidden");
